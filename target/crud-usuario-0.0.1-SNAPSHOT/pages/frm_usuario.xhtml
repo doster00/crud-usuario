@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/tpl_layout.xhtml">
+
+	<ui:define name="content">
+		<h1 class="aw-page-title">Usuários</h1>
+
+		<h:form id="frmPrincipal">
+			<p:growl id="growl" autoUpdate="true" showDetail="true" showSummary="false" severity="info, warn, error" life="5000" />
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<p:commandButton value="Novo" oncomplete="PF('dlgPrincipalWvar').show()" actionListener="#{usuarioController.novo(null)}" update="pnDlgPrincipal" icon="fa fa-plus" />
+					<span class="ui-separator"><span class="ui-icon ui-icon-grip-dotted-vertical" /></span>
+					<p:commandButton icon="fa fa-pencil" value="Editar" title="Editar" disabled="#{usuarioController.registroSelecionado == null}" oncomplete="PF('dlgPrincipalWvar').show()" immediate="true" process="@this" actionListener="#{usuarioController.editar(null)}" update="frmPrincipal:pnDlgPrincipal">
+						<f:setPropertyActionListener value="#{usuarioController.registroSelecionado}" target="#{usuarioController.entidade}" />
+					</p:commandButton>
+					<p:commandButton icon="fa fa-trash" title="Excluir" value="Excluir" actionListener="#{usuarioController.excluir(null)}" process="@this" immediate="true" disabled="#{usuarioController.registroSelecionado == null}" update="pnDlgPrincipal, dtPrincipal, toolbar">
+						<p:confirm header="Confirmação de exclusão" message="Tem certeza que deseja excluir?" />
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+
+			<p:dataTable id="dtPrincipal" value="#{usuarioController.listRegistros}" emptyMessage="Nenhum registro encontrado." var="dtPrincipalVar" rows="20" paginator="true" paginatorPosition="bottom" style="margin-top:5px" selection="#{usuarioController.registroSelecionado}" selectionMode="single"
+				rowKey="#{dtPrincipalVar.id}">
+
+				<p:ajax event="rowSelect" update=":frmPrincipal:toolbar" listener="#{usuarioController.onRowSelect}" process="@this" />
+				<p:ajax event="rowUnselect" update=":frmPrincipal:toolbar" listener="#{usuarioController.onRowUnselect}" process="@this" />
+
+				<p:column headerText="Código" width="10%">
+					<h:outputText value="#{dtPrincipalVar.id}" style="text-align:center" />
+				</p:column>
+
+				<p:column headerText="Login">
+					<h:outputText value="#{dtPrincipalVar.nomUsuario}" />
+				</p:column>
+
+				<p:column headerText="Matrícula">
+					<h:outputText value="#{dtPrincipalVar.numMatricula}" />
+				</p:column>
+
+				<p:column headerText="Tipo do usuário">
+					<h:outputText value="#{dtPrincipalVar.tipoUsuario.nomTipoUsuario}" />
+				</p:column>
+
+				<p:column headerText="Recebe email">
+					<h:outputText value="#{dtPrincipalVar.indRecebeEmailFormatado}" />
+				</p:column>
+
+				<p:column headerText="Email">
+					<h:outputText value="#{dtPrincipalVar.txtEmail}" />
+				</p:column>
+
+				<p:column headerText="Data do cadastro" width="15%">
+					<h:outputText value="#{dtPrincipalVar.dthCadastroFormatado}" styleClass="dtAlignCenter" />
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog header="Usuário" widgetVar="dlgPrincipalWvar" id="dlgPrincipal" resizable="false" modal="true" closeOnEscape="true" style="margin-top:10px">
+				<h:panelGroup id="pnDlgPrincipal">
+					<div class="campoForm">
+						<p:outputLabel value="Login" />
+						<div class="EmptyBox5" />
+						<p:inputText value="#{usuarioController.entidade.nomUsuario}" />
+					</div>
+
+					<div class="campoForm">
+						<p:outputLabel value="Senha" />
+						<div class="EmptyBox5" />
+						<p:password value="#{usuarioController.entidade.txtSenha}" redisplay="true" />
+					</div>
+
+					<div class="campoForm">
+						<p:outputLabel value="Matrícula" />
+						<div class="EmptyBox5" />
+						<p:inputText value="#{usuarioController.entidade.numMatricula}" />
+					</div>
+
+					<div class="EmptyBox5" />
+
+					<div class="campoForm">
+						<p:outputLabel value="Tipo do usuário" />
+						<div class="EmptyBox5" />
+						<p:selectOneMenu value="#{usuarioController.entidade.tipoUsuario}" var="tipoUsuarioVar" converter="TipoUsuarioConverter">
+							<f:selectItem itemValue="" itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{usuarioController.listTipoUsuarioSI}" />
+
+							<p:column>
+								<h:outputText value="#{tipoUsuarioVar.id}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{tipoUsuarioVar.nomTipoUsuario}" />
+							</p:column>
+
+							<p:ajax update="pnEmail" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="EmptyBox5" />
+
+					<h:panelGroup id="pnEmail">
+						<h:panelGroup rendered="#{usuarioController.entidade.tipoUsuario.sglTipoUsuario == 'A'}">
+							<div class="campoForm">
+								<p:outputLabel value="Recebe email" />
+								<div class="EmptyBox5" />
+								<p:selectOneRadio value="#{usuarioController.entidade.indRecebeEmail}">
+									<f:selectItem itemLabel="Sim" itemValue="S" />
+									<f:selectItem itemLabel="Não" itemValue="N" />
+
+									<p:ajax update="pnEmail" />
+								</p:selectOneRadio>
+							</div>
+
+							<h:panelGroup rendered="#{usuarioController.entidade.indRecebeEmail == 'S'}">
+								<div class="campoForm">
+									<p:outputLabel value="Email" />
+									<div class="EmptyBox5" />
+									<p:inputText type="email" value="#{usuarioController.entidade.txtEmail}" />
+								</div>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+
+				<f:facet name="footer">
+					<p:commandButton value="Salvar" action="#{usuarioController.salvar(null)}" icon="fa fa-save" update="frmPrincipal:dtPrincipal" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

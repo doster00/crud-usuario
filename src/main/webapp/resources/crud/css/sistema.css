@@ -1,0 +1,152 @@
+/*
+css com customizacoes do sistema
+*/
+
+/*</cria uma borda no lado direito no componente tree da tela de categoria>*/
+
+/* <utilitario para espacamento - utilizar dentro de um div exemplo <div class="EmptyBox5" />> */
+.EmptyBox2 { display: block; width: 100%; height: 2px; }
+.EmptyBox5 { display: block; width: 100%; height: 5px; }
+.EmptyBox10 { display: block; width: 100%; height: 10px; }
+.EmptyBox15 { display: block; width: 100%; height: 15px; }
+.EmptyBox20 { display: block; width: 100%; height: 20px; }
+.EmptyBox25 { display: block; width: 100%; height: 25px; }
+.EmptyBox30 { display: block; width: 100%; height: 30px; }
+/* </utilitario para espacamento - utilizar dentro de um div exemplo <div class="EmptyBox5" />> */
+
+/* <utilitario para tamanho de font> */
+.fs5 { font-size: 5pt; }
+.fs10 { font-size: 10pt; }
+.fs15 { font-size: 15pt; }
+.fs20 { font-size: 20pt; }
+.fs25 { font-size: 25pt; }
+.fs30 { font-size: 30pt; }
+.fs35 { font-size: 35pt; }
+.fs40 { font-size: 40pt; }
+/* </utilitario para tamanho de font> */
+
+/*<ajusta a cor do header do dialog >*/
+.ui-dialog-titlebar {
+	background: #006699!important; /* Old browsers */
+	color: #FFF!important;
+}
+/*<ajusta a cor do header do dialog >*/
+
+/*<ajusta o tamanho do filters no datatable>*/
+.ui-datatable .ui-column-filter {
+	width: 85%!important;
+}
+/*</ajusta o tamanho do filters no datatable>*/
+
+/*<grandient de cores para accordion panel>*/
+.ui-accordion-header {
+	border-radius: 5px 5px 0 0 !important;
+	background: #ffffff!important; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%)!important; /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%)!important; /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%)!important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 )!important; /* IE6-9 */
+}
+/*</grandient de cores para accordion panel>*/
+
+/* <command button verde> */
+.btnGreen {
+	border:1px solid #34740e!important; 
+	font-size:12px;
+	padding: 10px 10px 10px 10px; 
+	text-decoration:none; 
+	color: #FFFFFF!important;
+ 	background-color: #4ba614!important; 
+ 	background-image: -webkit-gradient(linear, left top, left bottom, from(#4ba614), to(#008c00));
+	background-image: -webkit-linear-gradient(top, #4ba614, #008c00)!important;
+ 	background-image: -moz-linear-gradient(top, #4ba614, #008c00)!important;
+ 	background-image: -ms-linear-gradient(top, #4ba614, #008c00)!important;
+ 	background-image: -o-linear-gradient(top, #4ba614, #008c00)!important;
+ 	background-image: linear-gradient(to bottom, #4ba614, #008c00)!important;
+ 	filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#4ba614, endColorstr=#008c00)!important;
+}
+
+.btnGreen:hover {
+ 	border:1px solid #224b09!important;
+ 	background-color: #36780f!background-image: -webkit-gradient(linear, left top, left bottom, from(#36780f), to(#005900))!important;
+ 	background-image: -webkit-linear-gradient(top, #36780f, #005900)!important;
+ 	background-image: -moz-linear-gradient(top, #36780f, #005900)!important;
+ 	background-image: -ms-linear-gradient(top, #36780f, #005900)!important;
+ 	background-image: -o-linear-gradient(top, #36780f, #005900)!important;
+ 	background-image: linear-gradient(to bottom, #36780f, #005900)!important;
+ 	filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#36780f, endColorstr=#005900)!important;
+}
+/* </command button verde (experimental)> */
+
+/* <utilitario para deixar o texto em negrito> */
+.textBold { font-weight: bold; }
+/* </utilitario para deixar o texto em negrito> */
+
+/* <deixa os botões com icone, redondo> */
+.btnRedondo25 { width: 25px!important; height: 25px!important; border-radius: 50%!important; }
+.btnRedondo35 { width: 35px!important; height: 35px!important; border-radius: 50%!important; }
+/* </deixa os botões com icone, redondo> */
+
+/*<background principal do sistema>*/
+body {
+	background-image: url("#{resource['crud/images/background.jpg']}");
+}
+/*</background principal do sistema>*/
+
+/* <login> */
+.bodyLogin {
+	min-height: 100vh;
+	background-color: #3498DB;
+}
+
+.login-form {
+	-webkit-box-shadow: 6px 6px 10px #999; 
+	-moz-box-shadow: 6px 6px 10px #999;
+    box-shadow: 6px 6px 10px #999;
+	margin-top: 50vh;
+	padding: 20px 30px;
+	background-color: rgba(255, 255, 255, .9);
+	color: #000;
+	transform: translateY(-50%);
+	border-radius: 5px;
+}
+
+.login-form h1 {
+	margin: 0 0 5px;
+}
+
+.login-form h2 {
+	margin: 0 0 30px;
+	font-size: 1em;
+}
+/* </login> */
+
+/* <alinhamento dos h:outputtext dentro do datatable> */
+.dtAlignCenter {
+	display: block;
+	text-align: center;
+}
+
+.dtAlignRight {
+	float: right;
+}
+/* </alinhamento dos h:outputtext dentro do datatable> */
+
+/* <panel principal> */
+.pnPrincipal {
+	margin-top: 10px !important; 
+	padding : 0 !important;
+	border: none;
+	padding: 0 !important;
+}
+
+.pnPrincipal .ui-panel-content {
+	padding: 0 !important;
+}
+/* </panel principal> */
+
+.footer {
+	position: fixed;
+	width:100%;
+	bottom: 10px;
+}
