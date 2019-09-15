@@ -4,6 +4,9 @@
 			<p:submenu label="Cadastros" expanded="false">
 				<p:menuitem value="Usuários" icon="fa fa-user-plus" outcome="/pages/frm_usuario.xhtml" />
 			</p:submenu>
+	        <p:submenu label="Administração do Sistema" expanded="false">
+	            <p:menuitem value="Sair" icon="fa fa-power-off" action="#{loginMB.logout()}"/>
+	        </p:submenu>
 		</p:menu>
 	</h:form>
 </ui:composition>

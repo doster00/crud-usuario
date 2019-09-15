@@ -2,16 +2,6 @@
 css com customizacoes do sistema
 */
 
-/*<cria uma borda no lado direito no componente tree da tela de categoria>*/
-.treeCategoria {
-    padding-left: 0!important;
-    border-right: 3px solid #006666;
-    border-bottom: 0;
-    border-top: 0;
-    border-left: 0;
-    border-radius: 0;
-    min-height: 150px;
-}
 /*</cria uma borda no lado direito no componente tree da tela de categoria>*/
 
 /* <utilitario para espacamento - utilizar dentro de um div exemplo <div class="EmptyBox5" />> */
@@ -34,31 +24,6 @@ css com customizacoes do sistema
 .fs35 { font-size: 35pt; }
 .fs40 { font-size: 40pt; }
 /* </utilitario para tamanho de font> */
-
-/*<ajusta a cor dos eventos da agenda e ajusta outros detalhes>*/
-.blueEvent .fc-content { background-color: #1E90FF; }
-.orangeEvent .fc-content {background-color: #FFA500; }
-.redEvent .fc-content { background-color: #FF0000; }
-.yellowEvent .fc-content { background-color: #FFFF00; }
-.greenEvent .fc-content { background-color: #32CD32; }
-.grayEvent .fc-content { background-color: #CDC9C9; }
-
-.fc-event {
-	border: none!important;
-	border-radius: 5px!important;
-	background-color: #606060!important
-}
-
-.fc-title {
-	padding: 5px!important
-	margin: 5px!important;
-	font-size:10pt
-}
-
-.fc-content {
-	border-radius: 5px!important;
-}
-/*</ajusta a cor dos eventos da agenda e ajusta outros detalhes>*/
 
 /*<ajusta a cor do header do dialog >*/
 .ui-dialog-titlebar {
@@ -84,7 +49,7 @@ css com customizacoes do sistema
 }
 /*</grandient de cores para accordion panel>*/
 
-/* <command button verde (experimental)> */
+/* <command button verde> */
 .btnGreen {
 	border:1px solid #34740e!important; 
 	font-size:12px;
@@ -117,14 +82,10 @@ css com customizacoes do sistema
 .textBold { font-weight: bold; }
 /* </utilitario para deixar o texto em negrito> */
 
-/* <panel grid com totais no or�amento> */
-.pgOrcamento { width: 335px; }
-/* </panel grid com totais no or�amento> */
-
-/* <deixa os bot�es com icone, redondo> */
+/* <deixa os botões com icone, redondo> */
 .btnRedondo25 { width: 25px!important; height: 25px!important; border-radius: 50%!important; }
 .btnRedondo35 { width: 35px!important; height: 35px!important; border-radius: 50%!important; }
-/* </deixa os bot�es com icone, redondo> */
+/* </deixa os botões com icone, redondo> */
 
 /*<background principal do sistema>*/
 body {
@@ -183,7 +144,6 @@ body {
 	padding: 0 !important;
 }
 /* </panel principal> */
-
 
 .footer {
 	position: fixed;

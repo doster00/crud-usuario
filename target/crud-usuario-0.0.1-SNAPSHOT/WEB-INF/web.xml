@@ -65,6 +65,6 @@
 
 	<!-- página inicial -->
 	<welcome-file-list>
-		<welcome-file>pages/frm_index.xhtml</welcome-file>
+		<welcome-file>frm_login.xhtml</welcome-file>
 	</welcome-file-list>
 </web-app>
