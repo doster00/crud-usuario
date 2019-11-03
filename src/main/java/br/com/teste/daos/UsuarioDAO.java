@@ -30,11 +30,12 @@ public class UsuarioDAO extends DAOPadrao<Usuario> {
 	public Usuario buscarPorEmailESenha(String email, String senha) {
 		getSession().beginTransaction();
 		Criteria ct = getSession().createCriteria(Usuario.class);
+		ct.createAlias(Usuario.COLUMN_TELEFONES, Usuario.COLUMN_TELEFONES, JoinType.LEFT_OUTER_JOIN);
 		ct.add(Restrictions.eq(Usuario.COLUMN_EMAIL, email));
 		ct.add(Restrictions.eq(Usuario.COLUMN_SENHA, senha));
+		ct.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		Usuario usuario = (Usuario) ct.uniqueResult();
 		getSession().getTransaction().commit();
 		return usuario;
 	}
-
 }

@@ -2,6 +2,7 @@ package br.com.teste.utils;
 
 import java.security.MessageDigest;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
@@ -11,7 +12,7 @@ public class Utils {
 
 	public static final String USUARIO_MASTER = "master";
 	public static final String USUARIO_MASTER_EMAIL = "master@master.com";
-	
+
 	public static final String MENSAGEM_CADASTRO_SUCESSO = "Registro salvo com sucesso.";
 	public static final String MENSAGEM_ALTERADO_SUCESSO = "Registro alterado com sucesso.";
 	public static final String MENSAGEM_EXCLUIDO_SUCESSO = "Registro excluído com sucesso.";
@@ -66,6 +67,24 @@ public class Utils {
 		}
 
 		return senhaCriptografada;
+	}
+
+	public static boolean isEmailInvalido(String email) {
+		return !isEmailValido(email);
+	}
+
+	public static boolean isEmailValido(String email) {
+		boolean emailValido = false;
+
+		if (isPreenchido(email)) {
+			final String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+			Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+			if (pattern.matcher(email).matches()) {
+				emailValido = true;
+			}
+		}
+
+		return emailValido;
 	}
 
 	public static void enviarMensagem(String mensagem) {

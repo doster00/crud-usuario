@@ -44,9 +44,19 @@ public class Telefone extends Entidade {
 
 	@Column(name = "tipo")
 	private String tipo;
-	
+
 	@Transient
 	private Long idDataTable = new Date().getTime();
+
+	public Telefone() {
+
+	}
+
+	public Telefone(Integer ddd, String numero, String tipo) {
+		this.ddd = ddd;
+		this.numero = numero;
+		this.tipo = tipo;
+	}
 
 	/*
 	 * Getters e Setters

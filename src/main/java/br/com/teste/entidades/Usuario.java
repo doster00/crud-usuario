@@ -40,6 +40,17 @@ public class Usuario extends Entidade {
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Telefone> telefones;
 
+	public Usuario() {
+
+	}
+
+	public Usuario(String nome, String email, String senha, List<Telefone> telefones) {
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.telefones = telefones;
+	}
+
 	/*
 	 * Getters e Setters
 	 */

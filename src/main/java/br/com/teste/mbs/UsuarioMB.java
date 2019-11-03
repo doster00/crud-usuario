@@ -8,7 +8,7 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.teste.entidades.Telefone;
 import br.com.teste.entidades.Usuario;
-import br.com.teste.exceptions.ExceptionPersonalizada;
+import br.com.teste.exceptions.NegocioException;
 import br.com.teste.rn.UsuarioRN;
 import br.com.teste.utils.Utils;
 
@@ -76,48 +76,6 @@ public class UsuarioMB extends ControllerPadrao<Usuario, UsuarioRN> {
 	}
 
 	@Override
-	public void checaRestricoesNovo() throws Exception {
-		checaRestricoesComuns();
-
-		Usuario usuario = getRegraNegocio().buscarPorNome(getEntidade().getNome());
-
-		if (Utils.isPreenchido(usuario)) {
-			throw new ExceptionPersonalizada("O nome utilizado já está sendo usado por outro usuário.");
-		}
-	}
-
-	@Override
-	public void checaRestricoesEdicao() throws Exception {
-		checaRestricoesComuns();
-
-		Usuario usuario = getRegraNegocio().buscarPorNome(getEntidade().getNome());
-
-		if (Utils.isPreenchido(usuario) && Utils.isPreenchido(getEntidade().getId())
-				&& !getEntidade().getId().equals(usuario.getId())) {
-			throw new ExceptionPersonalizada("O nome utilizado já está sendo usado por outro usuário.");
-		}
-	}
-
-	private void checaRestricoesComuns() throws Exception {
-		if (Utils.isNuloOuVazio(getEntidade().getNome())) {
-			throw new ExceptionPersonalizada("Favor informar o nome");
-		}
-
-		if (Utils.isNuloOuVazio(getEntidade().getSenha())) {
-			throw new ExceptionPersonalizada("Favor informar a senha");
-		}
-
-		if (Utils.isNuloOuVazio(getTelefones())) {
-			throw new ExceptionPersonalizada("Favor informar um telefone");
-		}
-	}
-
-	@Override
-	public void checaRestricoesExclusao() throws Exception {
-
-	}
-
-	@Override
 	public void iniciarTela() throws Exception {
 		limpar();
 		pesquisar();
@@ -133,7 +91,7 @@ public class UsuarioMB extends ControllerPadrao<Usuario, UsuarioRN> {
 
 			getTelefones().add(getTelefone());
 			setTelefone(new Telefone());
-		} catch (ExceptionPersonalizada e) {
+		} catch (NegocioException e) {
 			Utils.enviarMensagem(e.getMessage());
 		} catch (Exception e) {
 			Utils.enviarMensagem(Utils.MENSAGEM_ERRO_PADRAO);
@@ -141,17 +99,17 @@ public class UsuarioMB extends ControllerPadrao<Usuario, UsuarioRN> {
 		}
 	}
 
-	private void verificaTelefoneAntes() throws ExceptionPersonalizada {
+	private void verificaTelefoneAntes() throws NegocioException {
 		if (Utils.isNuloOuVazio(getTelefone().getDdd())) {
-			throw new ExceptionPersonalizada("Favor informar o DDD");
+			throw new NegocioException("Favor informar o DDD");
 		}
 
 		if (Utils.isNuloOuVazio(getTelefone().getNumero())) {
-			throw new ExceptionPersonalizada("Favor informar o número");
+			throw new NegocioException("Favor informar o número");
 		}
 
 		if (Utils.isNuloOuVazio(getTelefone().getTipo())) {
-			throw new ExceptionPersonalizada("Favor informar o tipo");
+			throw new NegocioException("Favor informar o tipo");
 		}
 	}
 

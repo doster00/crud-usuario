@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import br.com.teste.entidades.Telefone;
 import br.com.teste.entidades.Usuario;
+import br.com.teste.exceptions.NegocioException;
 import br.com.teste.rn.UsuarioRN;
 import br.com.teste.utils.Utils;
 
@@ -35,45 +36,46 @@ public class LoginMB implements Serializable {
 	 */
 
 	private void criaUsuarioPadrao() {
-		UsuarioRN usuarioRN = new UsuarioRN();
-		Usuario usuario = usuarioRN.buscarPorEmailESenha(Utils.USUARIO_MASTER_EMAIL, Utils.USUARIO_MASTER);
+		try {
+			UsuarioRN usuarioRN = new UsuarioRN();
+			Usuario usuarioSalvo = usuarioRN.buscarPorEmailESenha(Utils.USUARIO_MASTER_EMAIL, Utils.USUARIO_MASTER);
 
-		if (usuario == null) {
-			usuario = new Usuario();
-			usuario.setNome(Utils.USUARIO_MASTER);
-			usuario.setSenha(Utils.USUARIO_MASTER);
-			usuario.setEmail(Utils.USUARIO_MASTER_EMAIL);
+			if (usuarioSalvo == null) {
+				Telefone[] telefones = { new Telefone(88, "123456789", Telefone.TIPO_CELULAR) };
+				usuario = new Usuario( //
+						Utils.USUARIO_MASTER, //
+						Utils.USUARIO_MASTER_EMAIL, //
+						Utils.USUARIO_MASTER, //
+						Arrays.asList(telefones) //
+				);
 
-			Telefone telefone = new Telefone();
-			telefone.setDdd(88);
-			telefone.setNumero("123456789");
-			telefone.setTipo(Telefone.TIPO_CELULAR);
-			telefone.setUsuario(usuario);
-			Telefone[] telefones = { telefone };
-			usuario.setTelefones(Arrays.asList(telefones));
-
-			usuarioRN.salvar(usuario);
+				usuarioRN.salvar(usuario);
+			}
+		} catch (NegocioException e) {
+			Utils.enviarMensagem(e.getMessage());
+		} catch (Exception e) {
+			Utils.enviarMensagem(Utils.MENSAGEM_ERRO_PADRAO);
+			e.printStackTrace();
 		}
 	}
 
 	public String doLogin() throws Exception {
 		try {
 			UsuarioRN usuarioRN = new UsuarioRN();
+			Usuario usuarioSalvo = usuarioRN.buscarPorEmailESenha(usuario.getEmail(), usuario.getSenha());
 
-			setUsuario(usuarioRN.buscarPorEmailESenha(getUsuario().getEmail(), getUsuario().getSenha()));
-
-			if (Utils.isPreenchido(getUsuario())) {
+			if (Utils.isPreenchido(usuarioSalvo)) {
 				HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
 						.getSession(false);
 
-				session.setAttribute("usuario", usuario);
+				session.setAttribute("usuario", usuarioSalvo);
 
 				return "/pages/frm_index?faces-redirect=true";
 			} else {
 				throw new Exception("Favor verificar o e-mail e a senha.");
 			}
 		} catch (Exception e) {
-			setUsuario(new Usuario());
+			usuario = new Usuario();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 			return "/frm_login?faces-redirect=true";

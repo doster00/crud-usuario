@@ -11,7 +11,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
 import br.com.teste.entidades.Entidade;
-import br.com.teste.exceptions.ExceptionPersonalizada;
+import br.com.teste.exceptions.NegocioException;
 import br.com.teste.rn.RegraNegocio;
 import br.com.teste.utils.Utils;
 
@@ -38,12 +38,6 @@ public abstract class ControllerPadrao<T extends Entidade, E extends RegraNegoci
 
 	public abstract void selecionar() throws Exception;
 
-	public abstract void checaRestricoesNovo() throws Exception;
-
-	public abstract void checaRestricoesEdicao() throws Exception;
-
-	public abstract void checaRestricoesExclusao() throws Exception;
-
 	public abstract void iniciarTela() throws Exception;
 
 	/*
@@ -63,7 +57,7 @@ public abstract class ControllerPadrao<T extends Entidade, E extends RegraNegoci
 	public void novo(ActionEvent ae) {
 		try {
 			novo();
-		} catch (ExceptionPersonalizada e) {
+		} catch (NegocioException e) {
 			Utils.enviarMensagem(e.getMessage());
 		} catch (Exception e) {
 			Utils.enviarMensagem(Utils.MENSAGEM_ERRO_PADRAO);
@@ -74,7 +68,7 @@ public abstract class ControllerPadrao<T extends Entidade, E extends RegraNegoci
 	public void editar(ActionEvent ae) {
 		try {
 			editar();
-		} catch (ExceptionPersonalizada e) {
+		} catch (NegocioException e) {
 			Utils.enviarMensagem(e.getMessage());
 		} catch (Exception e) {
 			Utils.enviarMensagem(Utils.MENSAGEM_ERRO_PADRAO);
@@ -84,18 +78,12 @@ public abstract class ControllerPadrao<T extends Entidade, E extends RegraNegoci
 
 	public void salvar(ActionEvent ae) {
 		try {
-			if (getEntidade() == null || getEntidade().getId() == null) {
-				checaRestricoesNovo();
-			} else {
-				checaRestricoesEdicao();
-			}
-
 			salvar();
 			Utils.enviarMensagem(Utils.MENSAGEM_CADASTRO_SUCESSO);
 			limpar();
 			pesquisar();
 			RequestContext.getCurrentInstance().execute("PF('dlgPrincipalWvar').hide()");
-		} catch (ExceptionPersonalizada e) {
+		} catch (NegocioException e) {
 			Utils.enviarMensagem(e.getMessage());
 		} catch (Exception e) {
 			Utils.enviarMensagem(Utils.MENSAGEM_ERRO_PADRAO);
@@ -105,12 +93,11 @@ public abstract class ControllerPadrao<T extends Entidade, E extends RegraNegoci
 
 	public void excluir(ActionEvent ae) {
 		try {
-			checaRestricoesExclusao();
 			excluir();
 			pesquisar();
 			Utils.enviarMensagem(Utils.MENSAGEM_EXCLUIDO_SUCESSO);
 			limpar();
-		} catch (ExceptionPersonalizada e) {
+		} catch (NegocioException e) {
 			Utils.enviarMensagem(e.getMessage());
 		} catch (Exception e) {
 			Utils.enviarMensagem(Utils.MENSAGEM_ERRO_PADRAO);
