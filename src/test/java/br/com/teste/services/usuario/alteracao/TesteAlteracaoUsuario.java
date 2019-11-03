@@ -53,43 +53,55 @@ public class TesteAlteracaoUsuario extends TestCase {
 	}
 
 	public void testAlterarUsuarioRemovendoONome() {
+		boolean temErro = false;
 		try {
 			Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
 			usuario.setNome(null);
 			usuarioRN.atualizar(usuario);
 		} catch (Exception e) {
 			Assert.assertEquals("Favor informar o nome", e.getMessage());
+			temErro = true;
 		}
+		assertTrue(temErro);
 	}
 
 	public void testAlterarUsuarioRemovendoOEmail() {
+		boolean temErro = false;
 		try {
 			Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
 			usuario.setEmail(null);
 			usuarioRN.atualizar(usuario);
 		} catch (Exception e) {
 			Assert.assertEquals("Favor informar o e-mail", e.getMessage());
+			temErro = true;
 		}
+		assertTrue(temErro);
 	}
 
 	public void testAlterarUsuarioInformandoUmEmailInvalido() {
+		boolean temErro = false;
 		try {
 			Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
 			usuario.setEmail("abcde1234");
 			usuarioRN.atualizar(usuario);
 		} catch (Exception e) {
 			Assert.assertEquals("Favor informar um e-mail válido", e.getMessage());
+			temErro = true;
 		}
+		assertTrue(temErro);
 	}
 
 	public void testAlterarUsuarioSemInformarTelefones() {
+		boolean temErro = false;
 		try {
 			Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
 			usuario.setTelefones(null);
 			usuarioRN.atualizar(usuario);
 		} catch (Exception e) {
-			Assert.assertEquals("Favor informar um telefone", e.getMessage());
+			assertEquals("Favor informar um telefone", e.getMessage());
+			temErro = true;
 		}
+		assertTrue(temErro);
 	}
 
 	public void testAlterarUsuarioComTodosOsDadosCorretos() {
@@ -97,6 +109,7 @@ public class TesteAlteracaoUsuario extends TestCase {
 		String novoNomeUsuario = "Usuario Alterado";
 		String mensagemRetornada = null;
 		Usuario usuario = null;
+		boolean temErro = false;
 
 		try {
 			usuario = verificaUsuarioPorEmailESenha();
@@ -110,7 +123,8 @@ public class TesteAlteracaoUsuario extends TestCase {
 			e.printStackTrace();
 		}
 
-		Assert.assertEquals(mensagemSucesso, mensagemRetornada);
-		Assert.assertEquals(novoNomeUsuario, usuario.getNome());
+		assertEquals(mensagemSucesso, mensagemRetornada);
+		assertEquals(novoNomeUsuario, usuario.getNome());
+		assertFalse(temErro);
 	}
 }

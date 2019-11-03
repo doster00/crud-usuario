@@ -23,7 +23,7 @@ public class UsuarioRN extends RegraNegocio<Usuario, UsuarioDAO> {
 	@Override
 	public void verificaRestricoesComuns(Usuario usuario) throws NegocioException {
 		if (Utils.isNuloOuVazio(usuario.getNome())) {
-			throw new NegocioException("Favor informar o nome");
+			// throw new NegocioException("Favor informar o nome");
 		}
 
 		if (Utils.isNuloOuVazio(usuario.getEmail())) {
