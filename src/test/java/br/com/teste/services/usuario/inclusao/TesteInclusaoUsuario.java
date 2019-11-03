@@ -2,8 +2,6 @@ package br.com.teste.services.usuario.inclusao;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-
 import br.com.teste.entidades.Telefone;
 import br.com.teste.entidades.Usuario;
 import br.com.teste.rn.UsuarioRN;
@@ -32,53 +30,68 @@ public class TesteInclusaoUsuario extends TestCase {
 	}
 
 	public void testInserirUsuarioSemInformarNome() {
+		boolean temErro = false;
 		try {
 			usuarioMock.setNome(null);
 			usuarioRN.salvar(usuarioMock);
 		} catch (Exception e) {
-			Assert.assertEquals("Favor informar o nome", e.getMessage());
+			assertEquals("Favor informar o nome", e.getMessage());
+			temErro = true;
 		}
+		assertTrue(temErro);
 	}
 
 	public void testInserirUsuarioSemInformarEmail() {
+		boolean temErro = false;
 		try {
 			usuarioMock.setEmail(null);
 			usuarioRN.salvar(usuarioMock);
 		} catch (Exception e) {
-			Assert.assertEquals("Favor informar o e-mail", e.getMessage());
+			temErro = true;
+			assertEquals("Favor informar o e-mail", e.getMessage());
 		}
+		assertTrue(temErro);
 	}
 
 	public void testInserirUsuarioComEmailInvalido() {
+		boolean temErro = false;
 		try {
 			usuarioMock.setEmail("abcde123");
 			usuarioRN.salvar(usuarioMock);
 		} catch (Exception e) {
-			Assert.assertEquals("Favor informar um e-mail válido", e.getMessage());
+			temErro = true;
+			assertEquals("Favor informar um e-mail válido", e.getMessage());
 		}
+		assertTrue(temErro);
 	}
 
 	public void testInserirUsuarioSemInformarTelefones() {
+		boolean temErro = false;
 		try {
 			usuarioMock.setTelefones(null);
 			usuarioRN.salvar(usuarioMock);
 		} catch (Exception e) {
-			Assert.assertEquals("Favor informar um telefone", e.getMessage());
+			temErro = true;
+			assertEquals("Favor informar um telefone", e.getMessage());
 		}
+		assertTrue(temErro);
 	}
 
 	public void testInserirUsuarioComTodosOsDadosCorretos() {
 		String mensagemSucesso = "Usuário salvo com sucesso";
 		String mensagemRetornada = null;
+		boolean temErro = false;
 
 		try {
 			usuarioRN.salvar(usuarioMock);
 			mensagemRetornada = "Usuário salvo com sucesso";
 		} catch (Exception e) {
+			temErro = true;
 			mensagemRetornada = "Erro ao inserir";
 		}
 
-		Assert.assertEquals(mensagemSucesso, mensagemRetornada);
+		assertFalse(temErro);
+		assertEquals(mensagemSucesso, mensagemRetornada);
 	}
 
 }
