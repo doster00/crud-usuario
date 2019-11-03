@@ -1,19 +1,24 @@
 package br.com.teste.services.usuario.inclusao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 
+import org.junit.Test;
+
+import br.com.teste.TestePadrao;
 import br.com.teste.entidades.Telefone;
 import br.com.teste.entidades.Usuario;
+import br.com.teste.exceptions.NegocioException;
 import br.com.teste.rn.UsuarioRN;
-import junit.framework.TestCase;
 
-public class TesteInclusaoUsuario extends TestCase {
+public class TesteInclusaoUsuario extends TestePadrao {
 
 	private UsuarioRN usuarioRN;
 	private Usuario usuarioMock;
 
 	@Override
-	protected void setUp() throws Exception {
+	public void antesDeExecutarOsTestes() throws Exception {
 		usuarioRN = new UsuarioRN();
 		usuarioMock = criarUsuarioPadrao();
 	}
@@ -29,68 +34,42 @@ public class TesteInclusaoUsuario extends TestCase {
 		return usuario;
 	}
 
-	public void testInserirUsuarioSemInformarNome() {
-		boolean temErro = false;
-		try {
-			usuarioMock.setNome(null);
-			usuarioRN.salvar(usuarioMock);
-		} catch (Exception e) {
-			assertEquals("Favor informar o nome", e.getMessage());
-			temErro = true;
-		}
-		assertTrue(temErro);
+	@Test
+	public void testInserirUsuarioSemInformarNome() throws Exception {
+		verificaException(NegocioException.class, "Favor informar o nome");
+		usuarioMock.setNome(null);
+		usuarioRN.salvar(usuarioMock);
 	}
 
-	public void testInserirUsuarioSemInformarEmail() {
-		boolean temErro = false;
-		try {
-			usuarioMock.setEmail(null);
-			usuarioRN.salvar(usuarioMock);
-		} catch (Exception e) {
-			temErro = true;
-			assertEquals("Favor informar o e-mail", e.getMessage());
-		}
-		assertTrue(temErro);
+	@Test
+	public void testInserirUsuarioSemInformarEmail() throws Exception {
+		verificaException(NegocioException.class, "Favor informar o e-mail");
+		usuarioMock.setEmail(null);
+		usuarioRN.salvar(usuarioMock);
 	}
 
-	public void testInserirUsuarioComEmailInvalido() {
-		boolean temErro = false;
-		try {
-			usuarioMock.setEmail("abcde123");
-			usuarioRN.salvar(usuarioMock);
-		} catch (Exception e) {
-			temErro = true;
-			assertEquals("Favor informar um e-mail válido", e.getMessage());
-		}
-		assertTrue(temErro);
+	@Test
+	public void testInserirUsuarioComEmailInvalido() throws Exception {
+		verificaException(NegocioException.class, "Favor informar um e-mail válido");
+		usuarioMock.setEmail("abcde123");
+		usuarioRN.salvar(usuarioMock);
 	}
 
-	public void testInserirUsuarioSemInformarTelefones() {
-		boolean temErro = false;
-		try {
-			usuarioMock.setTelefones(null);
-			usuarioRN.salvar(usuarioMock);
-		} catch (Exception e) {
-			temErro = true;
-			assertEquals("Favor informar um telefone", e.getMessage());
-		}
-		assertTrue(temErro);
+	@Test
+	public void testInserirUsuarioSemInformarTelefones() throws Exception {
+		verificaException(NegocioException.class, "Favor informar um telefone");
+		usuarioMock.setTelefones(null);
+		usuarioRN.salvar(usuarioMock);
 	}
 
-	public void testInserirUsuarioComTodosOsDadosCorretos() {
+	@Test
+	public void testInserirUsuarioComTodosOsDadosCorretos() throws Exception {
 		String mensagemSucesso = "Usuário salvo com sucesso";
 		String mensagemRetornada = null;
-		boolean temErro = false;
 
-		try {
-			usuarioRN.salvar(usuarioMock);
-			mensagemRetornada = "Usuário salvo com sucesso";
-		} catch (Exception e) {
-			temErro = true;
-			mensagemRetornada = "Erro ao inserir";
-		}
+		usuarioRN.salvar(usuarioMock);
+		mensagemRetornada = "Usuário salvo com sucesso";
 
-		assertFalse(temErro);
 		assertEquals(mensagemSucesso, mensagemRetornada);
 	}
 

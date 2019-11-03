@@ -1,21 +1,24 @@
 package br.com.teste.services.usuario.alteracao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 
-import org.junit.Assert;
+import org.junit.Test;
 
+import br.com.teste.TestePadrao;
 import br.com.teste.entidades.Telefone;
 import br.com.teste.entidades.Usuario;
+import br.com.teste.exceptions.NegocioException;
 import br.com.teste.rn.UsuarioRN;
-import junit.framework.TestCase;
 
-public class TesteAlteracaoUsuario extends TestCase {
+public class TesteAlteracaoUsuario extends TestePadrao {
 
 	private UsuarioRN usuarioRN;
 	private Usuario usuarioMock;
 
 	@Override
-	protected void setUp() throws Exception {
+	public void antesDeExecutarOsTestes() throws Exception {
 		usuarioRN = new UsuarioRN();
 		usuarioMock = criarUsuarioPadrao();
 		inserirUsuarioMockCasoNaoExista();
@@ -47,84 +50,60 @@ public class TesteAlteracaoUsuario extends TestCase {
 		return usuario;
 	}
 
+	@Test
 	public void testBuscarUsuarioPeloEmailESenha() {
 		Usuario usuario = verificaUsuarioPorEmailESenha();
-		Assert.assertEquals(usuarioMock.getId(), usuario.getId());
+		assertEquals(usuarioMock.getId(), usuario.getId());
 	}
 
-	public void testAlterarUsuarioRemovendoONome() {
-		boolean temErro = false;
-		try {
-			Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
-			usuario.setNome(null);
-			usuarioRN.atualizar(usuario);
-		} catch (Exception e) {
-			Assert.assertEquals("Favor informar o nome", e.getMessage());
-			temErro = true;
-		}
-		assertTrue(temErro);
+	@Test
+	public void testAlterarUsuarioRemovendoONome() throws Exception {
+		verificaException(NegocioException.class, "Favor informar o nome");
+		Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
+		usuario.setNome(null);
+		usuarioRN.atualizar(usuario);
 	}
 
-	public void testAlterarUsuarioRemovendoOEmail() {
-		boolean temErro = false;
-		try {
-			Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
-			usuario.setEmail(null);
-			usuarioRN.atualizar(usuario);
-		} catch (Exception e) {
-			Assert.assertEquals("Favor informar o e-mail", e.getMessage());
-			temErro = true;
-		}
-		assertTrue(temErro);
+	@Test
+	public void testAlterarUsuarioRemovendoOEmail() throws Exception {
+		verificaException(NegocioException.class, "Favor informar o e-mail");
+		Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
+		usuario.setEmail(null);
+		usuarioRN.atualizar(usuario);
 	}
 
-	public void testAlterarUsuarioInformandoUmEmailInvalido() {
-		boolean temErro = false;
-		try {
-			Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
-			usuario.setEmail("abcde1234");
-			usuarioRN.atualizar(usuario);
-		} catch (Exception e) {
-			Assert.assertEquals("Favor informar um e-mail válido", e.getMessage());
-			temErro = true;
-		}
-		assertTrue(temErro);
+	@Test
+	public void testAlterarUsuarioInformandoUmEmailInvalido() throws Exception {
+		verificaException(NegocioException.class, "Favor informar um e-mail válido");
+		Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
+		usuario.setEmail("abcde1234");
+		usuarioRN.atualizar(usuario);
 	}
 
-	public void testAlterarUsuarioSemInformarTelefones() {
-		boolean temErro = false;
-		try {
-			Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
-			usuario.setTelefones(null);
-			usuarioRN.atualizar(usuario);
-		} catch (Exception e) {
-			assertEquals("Favor informar um telefone", e.getMessage());
-			temErro = true;
-		}
-		assertTrue(temErro);
+	@Test
+	public void testAlterarUsuarioSemInformarTelefones() throws Exception {
+		verificaException(NegocioException.class, "Favor informar um telefone");
+		Usuario usuario = usuarioRN.buscarPorEmailESenha(usuarioMock.getEmail(), usuarioMock.getSenha());
+		usuario.setTelefones(null);
+		usuarioRN.atualizar(usuario);
 	}
 
-	public void testAlterarUsuarioComTodosOsDadosCorretos() {
+	@Test
+	public void testAlterarUsuarioComTodosOsDadosCorretos() throws Exception {
 		String mensagemSucesso = "Usuário alterado com sucesso";
 		String novoNomeUsuario = "Usuario Alterado";
 		String mensagemRetornada = null;
 		Usuario usuario = null;
-		boolean temErro = false;
 
-		try {
-			usuario = verificaUsuarioPorEmailESenha();
-			usuario.setNome(novoNomeUsuario);
-			usuarioRN.atualizar(usuario);
+		usuario = verificaUsuarioPorEmailESenha();
+		usuario.setNome(novoNomeUsuario);
+		usuarioRN.atualizar(usuario);
 
-			usuario = verificaUsuarioPorEmailESenha();
-			mensagemRetornada = "Usuário alterado com sucesso";
-		} catch (Exception e) {
-			mensagemRetornada = "Erro ao alterar";
-			e.printStackTrace();
-		}
+		usuario = verificaUsuarioPorEmailESenha();
+		mensagemRetornada = "Usuário alterado com sucesso";
 
 		assertEquals(mensagemSucesso, mensagemRetornada);
 		assertEquals(novoNomeUsuario, usuario.getNome());
-		assertFalse(temErro);
 	}
+
 }
