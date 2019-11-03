@@ -15,6 +15,14 @@ import br.com.teste.exceptions.NegocioException;
 import br.com.teste.rn.RegraNegocio;
 import br.com.teste.utils.Utils;
 
+/**
+ * Todos os controllers devem extender dessa classe
+ * 
+ * @author Bruno
+ *
+ * @param <T> entidade
+ * @param <E> regra de negocio
+ */
 public abstract class ControllerPadrao<T extends Entidade, E extends RegraNegocio<T, ?>> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
